@@ -1,7 +1,8 @@
 import mongoose, {Document, HydratedDocument, Model} from "mongoose";
-import bcrypt from "bcrypt";
 import {UserFields} from "../types";
-import {randomUUID} from "crypto";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import config from "../config";
 
 const SALT_WORK_FACTOR = 10;
 
@@ -46,7 +47,7 @@ UserSchema.methods.checkPassword = function (password: string) {
 };
 
 UserSchema.methods.generateAuthToken = function () {
-    this.token = randomUUID();
+    this.token = jwt.sign({_id: this._id}, config.jwtSecret, {expiresIn: '1h'});
 };
 
 UserSchema.pre('save', async function () {
