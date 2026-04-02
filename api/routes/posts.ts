@@ -2,7 +2,7 @@ import express from "express";
 import auth, {RequestWithUser} from "../middleware/auth";
 import {imagesUpload} from "../middleware/multer";
 import Post from "../models/Post";
-import {Error} from "mongoose"
+import mongoose, {Error} from "mongoose"
 
 const postsRouter = express.Router();
 
@@ -15,12 +15,15 @@ postsRouter.get('/', async (_req,res,next) => {
     }
 });
 
-postsRouter.get('/:id', async (req,res,next) => {
+postsRouter.delete('/:id', async (req,res,next) => {
     try{
         const {id} = req.params;
+        const isValid = mongoose.Types.ObjectId.isValid(id);
+        if(!id || !isValid) return res.status(400).send({error: 'Id must be provided in params'})
 
-        const post = await Post.findById(id).populate("user", "username");
-        res.send(post);
+        await Post.findOneAndDelete({_id: id});
+        res.send({message: 'Post deleted successfully'});
+
     }catch (e) {
         next(e)
     }

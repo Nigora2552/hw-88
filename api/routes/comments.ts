@@ -1,7 +1,7 @@
 import express from "express";
 import auth, {RequestWithUser} from "../middleware/auth";
 import Post from "../models/Post";
-import {Error} from "mongoose"
+import mongoose, {Error} from "mongoose"
 import Comment from "../models/Comments";
 
 const commentsRouter = express.Router();
@@ -42,7 +42,20 @@ commentsRouter.post('/', auth , async (req, res, next) => {
         }
         next(e)
     }
-})
+});
+commentsRouter.delete('/:id', async (req,res,next) => {
+    try{
+        const {id} = req.params;
+        const isValid = mongoose.Types.ObjectId.isValid(id);
+        if(!id || !isValid) return res.status(400).send({error: 'Id must be provided in params'})
+
+        await Comment.findByIdAndDelete(id);
+        res.send({message: 'Comment deleted successfully'});
+
+    }catch (e) {
+        next(e)
+    }
+});
 
 
 export default commentsRouter;

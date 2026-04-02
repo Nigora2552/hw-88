@@ -12,13 +12,13 @@ const PostSchema = new mongoose.Schema({
         required: true,
     },
     description: {
-        type:String,
+        type: String,
         required: function () {
             return !this.image;
         }
     },
-    image:{
-        type:String,
+    image: {
+        type: String,
         required: function () {
             return !this.description;
         }
@@ -27,6 +27,13 @@ const PostSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     }
+});
+
+PostSchema.pre('findOneAndDelete', async function () {
+   const docToDelete = await this.model.findOne(this.getQuery());
+   if(docToDelete){
+       await  mongoose.model('Comment').deleteMany({post: docToDelete._id})
+   }
 });
 
 const Post = mongoose.model('Post', PostSchema);
