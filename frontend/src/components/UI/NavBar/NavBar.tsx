@@ -3,8 +3,8 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import {NavLink} from "react-router-dom";
-import {useAppSelector} from "../../app/hooks.ts";
-import {selectUser} from "../../features/users/usersSelectore.ts";
+import {useAppSelector} from "../../../app/hooks.ts";
+import {selectUser} from "../../../features/users/usersSelectore.ts";
 import UserMenu from "./UserMenu.tsx";
 import AnonymousMenu from "./AnonymousMenu.tsx";
 

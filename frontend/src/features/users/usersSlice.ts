@@ -1,11 +1,13 @@
 import type {GlobalError, User, ValidationError} from "../../types";
 import {createSlice} from "@reduxjs/toolkit";
-import {login, register} from "./usersThunks.ts";
+import {login, logout, register} from "./usersThunks.ts";
 
 interface UsersState {
     user: User | null;
     registerLoading: boolean;
     registerError: ValidationError | null;
+    logoutLoading: boolean;
+    logoutError:boolean;
     loginLoading: boolean;
     loginError: GlobalError | null;
 }
@@ -14,6 +16,8 @@ const initialState: UsersState = {
     user: null,
     registerLoading: false,
     registerError: null,
+    logoutLoading: false,
+    logoutError: false,
     loginLoading: false,
     loginError: null,
 }
@@ -48,7 +52,21 @@ export  const usersSlice = createSlice({
             state.loginLoading = false;
             state.loginError = error || null;
         });
+
+            builder.addCase(logout.pending, (state) =>{
+            state.logoutLoading = true;
+            state.logoutError = true;
+        });
+            builder.addCase(logout.fulfilled, (state) =>{
+            state.logoutLoading = false;
+            state.user = null;
+        });
+            builder.addCase(logout.rejected, (state) =>{
+            state.logoutLoading = false;
+            state.logoutError = false;
+        });
     }
 });
+
 
 export  const userReducer = usersSlice.reducer;

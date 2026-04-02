@@ -26,7 +26,6 @@ const UserSchema = new mongoose.Schema<HydratedDocument<UserFields>,
     },
     token: {
         type: String,
-        required: true,
     }
 });
 
@@ -52,7 +51,11 @@ UserSchema.pre('save', async function () {
     if (!this.isModified('password')) return;
 
     try {
-        this.password = await argon2.hash(this.password);
+        this.password = await argon2.hash(this.password,{
+            type: argon2.argon2id,
+            memoryCost: 2 ** 16,
+            timeCost: 3,
+        });
     } catch (e) {
         throw new Error('Error hashing password');
     }

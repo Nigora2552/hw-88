@@ -30,4 +30,18 @@ export interface LoginMutation {
     password: string;
 }
 
+export interface IPosts{
+    user: User;
+    _id: string;
+    title: '',
+    description: '',
+    image: string | null;
+    createdAt: string;
+}
 
+export interface PostMutation{
+    title: '',
+    description: '',
+    image: File | null;
+    createdAt?: string  ;
+}
