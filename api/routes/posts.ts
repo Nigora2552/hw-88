@@ -8,8 +8,19 @@ const postsRouter = express.Router();
 
 postsRouter.get('/', async (_req,res,next) => {
     try{
-        const posts = await Post.find();
+        const posts = await Post.find().populate("user", "username").sort({createdAt: -1});
         res.send(posts);
+    }catch (e) {
+        next(e)
+    }
+});
+
+postsRouter.get('/:id', async (req,res,next) => {
+    try{
+        const {id} = req.params;
+
+        const post = await Post.findById(id).populate("user", "username");
+        res.send(post);
     }catch (e) {
         next(e)
     }
@@ -20,7 +31,7 @@ postsRouter.post('/', auth, imagesUpload.single('image'), async (req, res, next)
     const {user} = req as RequestWithUser;
 
     const newPost = new Post({
-        author: user._id.toString(),
+        user: user._id.toString(),
         title: req.body.title,
         description: req.body.description,
         image: req.file ? 'images/' + req.file.filename : null,

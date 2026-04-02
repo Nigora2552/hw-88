@@ -5,6 +5,7 @@ import config from "./config";
 import usersRouter from "./routes/users";
 import dotenv from "dotenv";
 import postsRouter from "./routes/posts";
+import commentsRouter from "./routes/comments";
 
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
+app.use('/comments', commentsRouter);
 
 
 const run = async () => {
