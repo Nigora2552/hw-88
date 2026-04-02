@@ -1,10 +1,8 @@
 import mongoose, {Document, HydratedDocument, Model} from "mongoose";
 import {UserFields} from "../types";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import config from "../config";
 import argon2 from "argon2";
-
 
 interface userMethods {
     checkPassword: (password: string) => Promise<boolean>;

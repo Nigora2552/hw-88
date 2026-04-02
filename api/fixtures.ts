@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import config from "./config";
 import User from "./models/User";
 import {randomUUID} from "crypto";
+import Post from "./models/Post";
 
 const run = async () => {
     await mongoose.connect(config.db);
@@ -9,11 +10,13 @@ const run = async () => {
 
     try {
         await db.dropCollection('users');
+        await db.dropCollection('post');
+        await db.dropCollection('comments');
     } catch (e) {
         console.log('Collections were not present, skipping drop')
     }
 
-    await User.create(
+    const [authorAlisa, JonePost] = await User.create(
         {
             username: 'Alisa',
             password: '123',
@@ -23,6 +26,33 @@ const run = async () => {
             username: 'Jone',
             password: '123',
             token: randomUUID()
+        },
+    );
+
+    await Post.create(
+        {
+            author: authorAlisa!._id,
+            title: 'Post 1',
+            description: 'Post text 1',
+            image: null,
+        },
+        {
+            author: authorAlisa!._id,
+            title: 'Post 2',
+            description: 'Post text 2',
+            image: null,
+        },
+        {
+            author: JonePost!._id,
+            title: 'Post 1',
+            description: 'Post text 1',
+            image: null,
+        },
+        {
+            author: JonePost!._id,
+            title: 'Post 1',
+            description: 'Post text 2',
+            image: null,
         },
     )
 

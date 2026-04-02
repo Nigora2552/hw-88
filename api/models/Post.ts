@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 
 const PostSchema = new mongoose.Schema({
     author: {
-        type: String || 'Anonymous',
+        type: mongoose.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     title: {

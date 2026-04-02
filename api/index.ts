@@ -4,6 +4,7 @@ import  cors from "cors";
 import config from "./config";
 import usersRouter from "./routes/users";
 import dotenv from "dotenv";
+import postsRouter from "./routes/posts";
 
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.static('public'))
 app.use(express.json());
 
 app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
 
 
 const run = async () => {
