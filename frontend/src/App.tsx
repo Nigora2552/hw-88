@@ -29,7 +29,9 @@ const App = () => {
                     <ProtectedRouter isAllowed={Boolean(user)}><AddNewPost/></ProtectedRouter>
                 }/>
                 <Route path='/post/:id' element={
-                    <ProtectedRouter isAllowed={Boolean(user)}><FullInfoAboutPost/></ProtectedRouter>
+                    <ProtectedRouter isAllowed={Boolean(user)}>
+                        <FullInfoAboutPost/>
+                    </ProtectedRouter>
                 }/>
                 <Route path='/*' element={<h1>Page not found</h1>}/>
 

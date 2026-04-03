@@ -22,7 +22,7 @@ commentsRouter.post('/', auth , async (req, res, next) => {
 
     const postId = req.body.post;
     const postExist = await Post.findById(postId);
-    if (!postExist)  res.status(404).send({ error: 'Post not found' });
+    if (!postExist) return res.status(404).send({ error: 'Post not found' });
 
 
     const newComment = new Comment({

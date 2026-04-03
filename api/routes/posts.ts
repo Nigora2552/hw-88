@@ -41,8 +41,6 @@ postsRouter.delete('/:id', async (req,res,next) => {
     }
 });
 
-
-
 postsRouter.post('/', auth, imagesUpload.single('image'), async (req, res, next) => {
 
     const {user} = req as RequestWithUser;

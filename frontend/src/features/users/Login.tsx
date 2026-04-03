@@ -29,7 +29,7 @@ const Login = () => {
             await dispatch(login(form)).unwrap();
             navigation('/');
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     }
 

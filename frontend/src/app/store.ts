@@ -1,7 +1,8 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {userReducer} from "../features/users/usersSlice.ts";
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
+import {FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE} from 'redux-persist';
 import {postsReducer} from "../features/posts/postsSlice.ts";
+import {commentsReducer} from "../features/comments/commentsSlice.ts";
 
 const userPersistConfig = {
     key: 'store:user',
@@ -20,9 +21,9 @@ const userPersistConfig = {
 };
 
 const rootReducer = combineReducers({
-    users: persistReducer(userPersistConfig, userReducer) ,
+    users: persistReducer(userPersistConfig, userReducer),
     posts: postsReducer,
-
+    comment: commentsReducer,
 })
 
 export const store = configureStore({
@@ -35,7 +36,7 @@ export const store = configureStore({
         }),
 });
 
-export  const persistor = persistStore(store);
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

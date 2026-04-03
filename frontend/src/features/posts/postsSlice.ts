@@ -1,6 +1,6 @@
 import type {IPosts} from "../../types";
 import {createSlice} from "@reduxjs/toolkit";
-import {addPost, getAllPosts, getPostById} from "./postsThunk.ts";
+import {addPost,  getAllPosts, getPostById} from "./postsThunk.ts";
 
 interface PostState {
     posts: IPosts[];
