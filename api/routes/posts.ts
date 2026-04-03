@@ -14,6 +14,18 @@ postsRouter.get('/', async (_req,res,next) => {
         next(e)
     }
 });
+postsRouter.get('/:id', async (req,res,next) => {
+    try{
+        const {id} = req.params;
+        const isValid = mongoose.Types.ObjectId.isValid(id);
+        if(!id || !isValid) return res.status(400).send({error: 'Id must be provided in params'})
+
+        const post = await Post.findById(id);
+        res.send(post);
+    }catch (e) {
+        next(e)
+    }
+});
 
 postsRouter.delete('/:id', async (req,res,next) => {
     try{
