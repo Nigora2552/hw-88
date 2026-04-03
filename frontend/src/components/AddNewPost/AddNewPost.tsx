@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
     TextField,
     Button,
@@ -10,26 +10,45 @@ import {
 } from '@mui/material';
 import FileInput from "../UI/FileInput/FileInput.tsx";
 import type {PostMutation} from "../../types";
+import {useAppDispatch} from "../../app/hooks.ts";
+import {addPost} from "../../features/posts/postsThunk.ts";
+import {useNavigate} from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AddNewPost = () => {
-        const [form, setForm] = useState<PostMutation>({
-            title: '',
-            description: '',
-            image: null,
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const [form, setForm] = useState<PostMutation>({
+        title: '',
+        description: '',
+        image: null,
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
         });
+    };
 
-        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!form.description.trim() && !form.image) {
+            toast.error("Please add description or choose image");
+            return;
+        } else {
+            await dispatch(addPost(form));
             setForm({
-                ...form,
-                [e.target.name]: e.target.value,
+                title: '',
+                description: '',
+                image: null,
             });
-        };
 
-        const handleSubmit = (e: React.FormEvent) => {
-            e.preventDefault();
-            console.log('Данные формы:', form);
-            // Здесь ваша логика отправки (dispatch thunk)
-        };
+            navigate('/')
+        }
+
+    };
 
     const fileInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, files} = e.target;
@@ -44,17 +63,16 @@ const AddNewPost = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <Paper elevation={3} sx={{ p: 4, mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Paper  elevation={3} sx={{p: 4, mt: 8, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <Typography component="h1" variant="h5">
-                    Создать аккаунт
+                    Add post
                 </Typography>
 
-                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
                     <Grid container spacing={2}>
-                        <Grid  size={12}>
+                        <Grid size={12}>
                             <TextField
                                 name="title"
-                                required
                                 fullWidth
                                 label="title"
                                 autoFocus
@@ -62,12 +80,11 @@ const AddNewPost = () => {
                                 onChange={handleChange}
                             />
                         </Grid>
-                        <Grid  size={12}>
+                        <Grid size={12}>
                             <TextField
-                                name="descroption"
-                                required
+                                name="description"
                                 fullWidth
-                                label="descroption"
+                                label="description"
                                 value={form.description}
                                 onChange={handleChange}
                             />
@@ -86,7 +103,7 @@ const AddNewPost = () => {
                         type="submit"
                         fullWidth
                         variant="contained"
-                        sx={{ mt: 3, mb: 2, py: 1.5 }}
+                        sx={{mt: 3, mb: 2, py: 1.5}}
                     >
                         Created post
                     </Button>

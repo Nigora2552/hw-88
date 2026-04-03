@@ -18,12 +18,12 @@ const PostCard: React.FC<Props> = ({post}) => {
     }
     return (
         <>
-            <Paper sx={{margin: '15px',padding: '20px', display: 'flex', alignItems: 'center'}}>
-                {cardImage ? <img width='100%' src={cardImage} alt={post.title}/> : <ChatBubbleIcon/>}
+            <Paper component={NavLink} to={`/post/${post._id}`} sx={{margin: '15px',padding: '20px', display: 'flex', alignItems: 'center'}}>
+                {cardImage ? <img width='25%' src={cardImage} alt={post.title}/> : <ChatBubbleIcon/>}
             <Box sx={{marginX: '20px'}}>
                 <span>{dayjs(post.createdAt).format('DD.MM.YY - hh:mm:s' )}</span>
                 <span>by {post.user.username}</span>
-                <NavLink to='/full_post' style={{display: 'block', margin: '10px 0'}}>{post.title}</NavLink>
+                <h3 style={{display: 'block', margin: '10px 0'}}>{post.title}</h3>
             </Box>
             </Paper>
         </>

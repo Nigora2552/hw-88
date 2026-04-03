@@ -19,7 +19,7 @@ const NavBar = () => {
                     <Grid container justifyContent='space-between' alignItems='center' sx={{width: '100%'}}>
                         <Typography component={NavLink} to='/'
                                     sx={{flexGrow: 1, textDecoration: 'none', color: 'white'}}>
-                            News
+                            Posts
                         </Typography>
                         <Grid>
                             {user ? <UserMenu user={user}/> : <AnonymousMenu/>}

@@ -1,11 +1,19 @@
-import mongoose from "mongoose";
+import mongoose, {Schema, Types} from "mongoose";
+import User from "./User";
 
 
 const PostSchema = new mongoose.Schema({
     user: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
+        validate: {
+            validator: async (userId: Types.ObjectId) => {
+                const user = await User.findById(userId);
+                return !!user;
+            },
+            message: 'User does not exist',
+        }
     },
     title: {
         type: String,
@@ -30,10 +38,10 @@ const PostSchema = new mongoose.Schema({
 });
 
 PostSchema.pre('findOneAndDelete', async function () {
-   const docToDelete = await this.model.findOne(this.getQuery());
-   if(docToDelete){
-       await  mongoose.model('Comment').deleteMany({post: docToDelete._id})
-   }
+    const docToDelete = await this.model.findOne(this.getQuery());
+    if (docToDelete) {
+        await mongoose.model('Comment').deleteMany({post: docToDelete._id})
+    }
 });
 
 const Post = mongoose.model('Post', PostSchema);

@@ -10,7 +10,7 @@ import AddNewPost from "./components/AddNewPost/AddNewPost.tsx";
 import ProtectedRouter from "./components/UI/protectedRouter/ProtectedRouter.tsx";
 import {selectUser} from "./features/users/usersSelectore.ts";
 import {useAppSelector} from "./app/hooks.ts";
-import FullInfoAboutPost from "./components/PostCard/FullInfoAboutPost.tsx";
+import FullInfoAboutPost from "./containers/PostInfo/FullInfoAboutPost.tsx";
 import {CssBaseline} from "@mui/material";
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
                 <Route path='/addPost' element={
                     <ProtectedRouter isAllowed={Boolean(user)}><AddNewPost/></ProtectedRouter>
                 }/>
-                <Route path='/full_post' element={
+                <Route path='/post/:id' element={
                     <ProtectedRouter isAllowed={Boolean(user)}><FullInfoAboutPost/></ProtectedRouter>
                 }/>
                 <Route path='/*' element={<h1>Page not found</h1>}/>
